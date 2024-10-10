@@ -23,7 +23,7 @@ class Feed(Window):
         self.allposts = self.databaseposts.get_all_posts()
 
         for index,post in enumerate(self.allposts):
-            self.feed.add_element(PostFrame(self.feed,post[1],post[2],post[0]),row=index)
+            self.feed.add_element(PostFrame(self.feed,post[1],post[2]),row=index)
 
         self.entryframe = Frame(self)
         self.entryframe.columnconfigure(0,weight=1)

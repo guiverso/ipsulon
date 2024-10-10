@@ -55,6 +55,8 @@ class Database: #um objeto para a database
             self.conn.autocommit = True
             self.curs = self.conn.cursor()#cursor
 
+        self.conn.autocommit = True
+
     def save(self):
         self.conn.commit()
         self.conn.close()
@@ -78,10 +80,10 @@ class Database: #um objeto para a database
         return self.curs.fetchall()
     
     def get_from(self,tablename:str,atributename:str='*',Where:bool=False,atrsearch:str='',value:str=''):
-        sqlcmd = f'SELECT {atributename} FROM {tablename} {f"WHERE {atrsearch} = {value}" if Where == True else ""} '
+        sqlcmd = f'SELECT {atributename} FROM {tablename} {f"WHERE {atrsearch} = {value}" if Where == True else ""};'
 
         self.execute(sqlcmd)
-        return self.getall()
+        return self.curs.fetchall()
 
     def insert_in(self,tablename:str,values:tuple[str]):
         value = ''+(','.join(str(val) for val in values))

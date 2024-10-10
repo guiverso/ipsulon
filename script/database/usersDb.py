@@ -9,6 +9,7 @@ class UserDatabase(Database):
 
         self.usernamepk = Constraint('username_pk','PRIMARY',self.usernamecollumn)
         #self.create_user_table()
+        
     
     def create_user_table(self):
         self.create_table('Users',(self.usernamecollumn,self.passwordcollumn,self.nicknamecollumn,self.usernamepk))
@@ -17,4 +18,5 @@ class UserDatabase(Database):
         self.insert_in('Users',(f"'{username}'",f"'{password}'",f"'{nickname}'"))
 
     def get_user_by_username(self,add_user:str):
-        return self.get_from('Users',Where=True,atrsearch='username',value=f"'{add_user}'")[0]
+        user = self.get_from('Users',Where=True,atrsearch='username',value=f"'{add_user}'")
+        return user[0]
