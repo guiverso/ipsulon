@@ -14,8 +14,6 @@ class Ipsulon(App):
 
         self.add_window(self.login)
         self.add_window(Createuser(self))
-        self.add_window(Feed(self))
-        self.add_window(Profile(self))
         
         self.mainloop()
 Ipsulon()

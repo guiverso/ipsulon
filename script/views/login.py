@@ -3,6 +3,8 @@ from script.services.bankedit import *
 from script.models.user import *
 from script.database.usersDb import *
 from script.services.windows import App
+from script.views.feed import *
+from script.views.profile import *
 
 class Login(Window):
     def __init__(self, master: App, name: str = 'login'):
@@ -43,8 +45,12 @@ class Login(Window):
         self.master.user = self.user
 
         if self.user.password == password:
-            self.master.change_window('feed')
             print('senha correta!')
-            print(self.master.user)
+            if self.master.change_window('feed'):
+                self.master.change_window('feed')
+            else:
+                self.master.add_window(Feed(self.master))
+                self.master.add_window(Profile(self.master,name=f'profile{self.master.user.username}'))
+                self.master.change_window('feed')
         else:
             print('senha incorreta')

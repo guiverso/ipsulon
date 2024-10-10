@@ -16,15 +16,14 @@ class Feed(Window):
         description=(fontfamily,15,'bold')
 
         self.title = Text(self,text='ÍPSULON',font=title)
+        self.toprofile = Button(self,text="ir para o seu perfil",command=self.to_profile)
 
         self.feed = ScrollFrame(self)
 
         self.allposts = self.databaseposts.get_all_posts()
 
         for index,post in enumerate(self.allposts):
-            self.feed.add_element(PostFrame(self.feed,post[1],post[2]),row=index)
-
-        print(f"testetodosposts:{self.allposts}")
+            self.feed.add_element(PostFrame(self.feed,post[1],post[2],post[0]),row=index)
 
         self.entryframe = Frame(self)
         self.entryframe.columnconfigure(0,weight=1)
@@ -34,8 +33,9 @@ class Feed(Window):
         self.entryframe.add_element(self.sendbutton,column=1)
 
         self.add_element(self.title,row=0,column=0)
-        self.add_element(self.feed,row=1,column=0)
-        self.add_element(self.entryframe,row=2,column=0)
+        self.add_element(self.toprofile, row=1)
+        self.add_element(self.feed,row=2,column=0)
+        self.add_element(self.entryframe,row=3,column=0)
 
     def send_post(self):
         username = self.master.user.username
@@ -45,9 +45,10 @@ class Feed(Window):
         self.databaseposts.add_post(username,nickname,content)
         self.allposts.append([username,nickname,content])
 
-        self.feed.add_element(PostFrame(self.feed,nickname,content),row=len(self.allposts))
+        self.feed.add_element(PostFrame(self.feed,nickname,content,username),row=len(self.allposts))
         self.entrypost.delete(0,len(self.entrypost.get()))
     
     def to_profile(self):
-        return self.master.change_window('profile')
+        username = self.master.user.username
+        return self.master.change_window(f'profile{username}')
 

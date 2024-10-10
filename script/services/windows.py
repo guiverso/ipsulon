@@ -28,6 +28,8 @@ class App(ctk.CTk):
             if(window.name==index):
                 print(True)
                 return window.tkraise()
+        
+        return False
             
 class Window(ctk.CTkFrame):
     def __init__(self, master:App,name:str):
