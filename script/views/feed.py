@@ -15,6 +15,7 @@ class Feed(Window):
         fontfamily = 'arial'
         title = (fontfamily,20,'bold')
         description=(fontfamily,15,'bold')
+        self.usersearch = None
 
         self.title = Text(self,text='ÍPSULON',font=title)
         self.toprofile = Button(self,text="ir para o seu perfil",command=lambda:self.to_profile(self.master.user.username))
@@ -53,9 +54,13 @@ class Feed(Window):
         self.entrypost.delete(0,len(self.entrypost.get()))
     
     def to_profile(self,username):
+        for user in self.master.userlist:
+            if username == user.username:
+                self.usersearch = user
+
         if self.master.change_window(f'profile{username}'):
             pass
         else:
-            self.master.add_window(Profile(self.master,name=f'profile{username}',usersearch=self.master.user,ownl=False))
+            self.master.add_window(Profile(self.master,name=f'profile{username}',usersearch=self.usersearch,ownl=False))
             self.master.change_window(f'profile{username}')
 

@@ -8,7 +8,8 @@ class UserDatabase(Database):
         self.nicknamecollumn = Column('nickname','varchar',20)
 
         self.usernamepk = Constraint('username_pk','PRIMARY',self.usernamecollumn)
-        #self.create_user_table()
+
+        self.create_user_table()
         
     
     def create_user_table(self):

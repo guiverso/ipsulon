@@ -21,9 +21,13 @@ class Profile(Window):
         self.add_element(self.homebtn,row=0,expandTo='w')
         self.add_element(self.labnickname,row=1,expandTo='w')
         self.add_element(self.username,row=2,expandTo='w')
-        if ownl == False:
-            self.add_element(self.followbutton,row=3,expandTo='w') 
-        self.add_element(self.frameposts,row=3+ownl)
+        if self.ownl == False:
+            self.add_element(self.followbutton,row=3,expandTo='w')
+        
+        print(int(self.ownl))
+
+        
+        self.add_element(self.frameposts,row=4-int(self.ownl))
 
         postdb = PostsDatabase()
 
