@@ -8,13 +8,13 @@ class App(ctk.CTk):
     def __init__(self,title:str,geometry:str,resizable:bool=False,icon=None):
         super().__init__()
         self.title(title)#seta o título
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.resizable(resizable,resizable)
-        self.geometry(geometry)
+        self.grid_rowconfigure(0, weight=1)#configura o limite de rows (1)
+        self.grid_columnconfigure(0, weight=1)#configura o limite de colunas (1)
+        self.resizable(resizable,resizable)#declara se é redimensionável (por padrão não é)
+        self.geometry(geometry)#o tamanho da tela
         self.windowslist = [] #uma lista de janelas 
 
-        if icon!=None:
+        if icon!=None:#se tiver algum ícone, coloca ele
             self.iconbitmap(icon)
 
     def add_window(self,window):#adiciona uma janela
@@ -22,63 +22,63 @@ class App(ctk.CTk):
         window.grid(row=0,column=0,sticky='nsew')
         self.change_window(0)
     
-    def change_window(self,index):
-        if(type(index)==int): return self.windowslist[index].tkraise()
-        for window in self.windowslist:
+    def change_window(self,index):#muda a janela(pelo id ou pelo nome)
+        if(type(index)==int): return self.windowslist[index].tkraise()#se for int, muda
+        for window in self.windowslist:#se for nome, procura entre todas as janelas e muda
             if(window.name==index):
                 print(True)
                 return window.tkraise()
         
-        return False
+        return False #se não encontrar nada, retorna falso
             
-class Window(ctk.CTkFrame):
+class Window(ctk.CTkFrame):#páginas (ou janelas) que não scrollam
+    def __init__(self, master:App,name:str):#recebe apenas nome e o "master"
+        super().__init__(master)
+        self.name=name
+    
+    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):#adiciona um elemento
+        element.grid(row=row,column=column,padx=padx,pady=pady,sticky=expandTo)
+
+class ScrollWindow(ctk.CTkScrollableFrame):#janelas que scrollam
     def __init__(self, master:App,name:str):
         super().__init__(master)
         self.name=name
     
-    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):
+    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):#adiciona um elemento 
         element.grid(row=row,column=column,padx=padx,pady=pady,sticky=expandTo)
 
-class ScrollWindow(ctk.CTkScrollableFrame):
-    def __init__(self, master:App,name:str):
-        super().__init__(master)
-        self.name=name
-    
-    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):
-        element.grid(row=row,column=column,padx=padx,pady=pady,sticky=expandTo)
-
-class Frame(ctk.CTkFrame):
+class Frame(ctk.CTkFrame):#frame 9sem scroll
     def __init__(self, master: Any, width: int = 200, height: int = 200, corner_radius: int | str | None = None, border_width: int | str | None = None, bg_color: str | Tuple[str] = "transparent", fg_color: str | Tuple[str] | None = None, border_color: str | Tuple[str] | None = None, background_corner_colors: Tuple[str | Tuple[str]] | None = None, overwrite_preferred_drawing_method: str | None = None, **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, background_corner_colors, overwrite_preferred_drawing_method, **kwargs)
     
-    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):
+    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):#adiciona um elemento
         element.grid(row=row,column=column,padx=padx,pady=pady,sticky=expandTo)
 
-class ScrollFrame(ctk.CTkScrollableFrame):
+class ScrollFrame(ctk.CTkScrollableFrame): #frame com scroll
     def __init__(self, master: Any, width: int = 200, height: int = 200, corner_radius: int | str | None = None, border_width: int | str | None = None, bg_color: str | Tuple[str] = "transparent", fg_color: str | Tuple[str] | None = None, border_color: str | Tuple[str] | None = None, scrollbar_fg_color: str | Tuple[str] | None = None, scrollbar_button_color: str | Tuple[str] | None = None, scrollbar_button_hover_color: str | Tuple[str] | None = None, label_fg_color: str | Tuple[str] | None = None, label_text_color: str | Tuple[str] | None = None, label_text: str = "", label_font: Tuple | ctk.CTkFont | None = None, label_anchor: str = "center", orientation: Literal['vertical'] | Literal['horizontal'] = "vertical"):
         super().__init__(master, width, height, corner_radius, border_width, bg_color, fg_color, border_color, scrollbar_fg_color, scrollbar_button_color, scrollbar_button_hover_color, label_fg_color, label_text_color, label_text, label_font, label_anchor, orientation)
     
-    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):
+    def add_element(self,element,row=0,column=0,padx=0,pady=0,expandTo='nsew'):#adiciona um elemento
         element.grid(row=row,column=column,padx=padx,pady=pady,sticky=expandTo)
 
-class Button(ctk.CTkButton):
+class Button(ctk.CTkButton):#botão
     def __init__(self, master: Any, width: int = 140, height: int = 28, corner_radius: int | None = None, border_width: int | None = None, border_spacing: int = 2, bg_color: str | Tuple[str] = "transparent", fg_color: str | Tuple[str] | None = None, hover_color: str | Tuple[str] | None = None, border_color: str | Tuple[str] | None = None, text_color: str | Tuple[str] | None = None, text_color_disabled: str | Tuple[str] | None = None, background_corner_colors: Tuple[str | Tuple[str]] | None = None, round_width_to_even_numbers: bool = True, round_height_to_even_numbers: bool = True, text: str = "CTkButton", font: Tuple | ctk.CTkFont | None = None, textvariable: ctk.Variable | None = None, image: ctk.CTkImage | Any | None = None, state: str = "normal", hover: bool = True, command: Callable[[], Any] | None = None, compound: str = "left", anchor: str = "center", **kwargs):
         super().__init__(master, width, height, corner_radius, border_width, border_spacing, bg_color, fg_color, hover_color, border_color, text_color, text_color_disabled, background_corner_colors, round_width_to_even_numbers, round_height_to_even_numbers, text, font, textvariable, image, state, hover, command, compound, anchor, **kwargs)
 
-class Entry(ctk.CTkEntry):
+class Entry(ctk.CTkEntry):#caixa de texto
     def __init__(self,window,placeHolder=None,password=False,width=140,height=28,corner=7,color='#343638',textColor='white',borderColor='#565b5e',border=2,justify='center',limitChar=13):
         self.limitChar = limitChar
         show = '●' if password == True else ''
         super().__init__(window,width,height,corner,border,'transparent',color,borderColor,textColor,'#808587',None,placeHolder,justify=justify,show=show)
         self.configure(validate='key',validatecommand=(window.register(self.validate),'%P'))
 
-    def changeViewPassword(self):
+    def changeViewPassword(self):#troca os caracteres mostrados caso seja um entry de password 
         if self.cget('show') == '●':
             self.configure(show='')
         else:
             self.configure(show='●')
 
-    def validate(self,currentEntry):
+    def validate(self,currentEntry):#valida o limite de caracteres
         return len(currentEntry) < self.limitChar
 
 class Text(ctk.CTkLabel):

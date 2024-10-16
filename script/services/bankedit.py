@@ -93,3 +93,7 @@ class Database: #um objeto para a database
     def delete(self,tablename:str,where:bool=False,atrsearch:str='',value:str=''):
         sqlcmd = f' DELETE FROM {tablename} {f"WHERE {atrsearch} = {value}" if where == True else ""}'
         return self.execute(sqlcmd)
+    
+    def edit(self,tablename:str,update:str,where:bool=False,indentify:str=''):
+        sqlcmd = f'UPDATE {tablename} SET {update} {f"WHERE {indentify}" if where == True else ""}'
+        return self.execute(sqlcmd)

@@ -50,7 +50,7 @@ class Login(Window):
                 self.master.change_window('feed')
             else:
                 self.master.add_window(Feed(self.master))
-                self.master.add_window(Profile(self.master,name=f'profile{self.master.user.username}',usersearch=self.master.user))
+                self.master.add_window(Profile(self.master,name=f'profile{self.master.user.username}',usersearch=self.master.user,ownl=True))
                 self.master.change_window('feed')
         else:
             print('senha incorreta')
