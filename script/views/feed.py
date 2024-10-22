@@ -24,9 +24,11 @@ class Feed(Window):
         self.feed.columnconfigure(0,weight=1)
 
         self.allposts = self.databaseposts.get_all_posts()
+        self.allpostframes = []
 
         for index,post in enumerate(self.allposts):
-            self.feed.add_element(PostFrame(self.feed,post[2],post[1],post[3],post[0]),row=index)
+            self.allpostframes.append(PostFrame(self.feed,post[2],post[1],post[3],post[0]))
+            self.feed.add_element(self.allpostframes[index],row=index)
 
         self.entryframe = Frame(self)
         self.entryframe.columnconfigure(0,weight=1)
@@ -64,3 +66,6 @@ class Feed(Window):
             self.master.add_window(Profile(self.master,name=f'profile{username}',usersearch=self.usersearch,ownl=False))
             self.master.change_window(f'profile{username}')
 
+    def refresh(self):
+        for index,post in enumerate(self.allposts):
+            self.allpostframes[index].configure(text=f'{post[1]}')

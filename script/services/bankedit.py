@@ -21,14 +21,15 @@ class Column(SqlVariable):
         return f'{self.name} {self.type} {self.null()}'
 
 class Constraint(SqlVariable):
-    def __init__(self, name: str,typectr:Literal['FOREIGN','PRIMARY'],atrref:Column,tableref:str = '', notnull: bool = False) -> None:
+    def __init__(self, name: str,typectr:Literal['FOREIGN','PRIMARY'],atrref:Column,tableref:str = '', notnull: bool = False,references:str="") -> None:
         super().__init__(name, notnull)
         self.typectr = typectr
         self.atrref = atrref
         self.tableref = tableref
+        self.references = references
     
     def __str__(self) -> str:
-        return f'CONSTRAINT {self.name} {self.typectr} KEY ({self.atrref.name}) {f"REFERENCES {self.tableref}({self.atrref.name})" if self.typectr == "FOREIGN" else ""}'
+        return f'CONSTRAINT {self.name} {self.typectr} KEY ({self.atrref.name}) {f"REFERENCES {self.tableref}({self.references})" if self.typectr == "FOREIGN" else ""}'
 
 class Database: #um objeto para a database
     def __init__(self,dbname:str,password:str,user:str='postgres',port:str='5432',host:str='localhost'):
@@ -81,18 +82,17 @@ class Database: #um objeto para a database
     
     def get_from(self,tablename:str,atributename:str='*',Where:bool=False,atrsearch:str='',value:str=''):
         sqlcmd = f'SELECT {atributename} FROM {tablename} {f"WHERE {atrsearch} = {value}" if Where == True else ""};'
-
         self.execute(sqlcmd)
         return self.curs.fetchall()
 
     def insert_in(self,tablename:str,values:tuple[str]):
         value = ''+(','.join(str(val) for val in values))
         sqlcmd = f'INSERT INTO {tablename} VALUES ({value})'
-        return self.execute(sqlcmd)
+        return self.curs.execute(sqlcmd)
 
-    def delete(self,tablename:str,where:bool=False,atrsearch:str='',value:str=''):
-        sqlcmd = f' DELETE FROM {tablename} {f"WHERE {atrsearch} = {value}" if where == True else ""}'
-        return self.execute(sqlcmd)
+    def delete(self,tablename:str,where:bool=False,condition:str=''):
+        sqlcmd = f' DELETE FROM {tablename} {f"WHERE {condition}" if where == True else ""}'
+        return self.curs.execute(sqlcmd)
     
     def edit(self,tablename:str,update:str,where:bool=False,indentify:str=''):
         sqlcmd = f'UPDATE {tablename} SET {update} {f"WHERE {indentify}" if where == True else ""}'

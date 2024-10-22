@@ -26,9 +26,14 @@ class App(ctk.CTk):
         if(type(index)==int): return self.windowslist[index].tkraise()#se for int, muda
         for window in self.windowslist:#se for nome, procura entre todas as janelas e muda
             if(window.name==index):
-                print(True)
                 return window.tkraise()
-        
+        return False #se não encontrar nada, retorna falso
+    
+    def get_window(self,index):
+        if(type(index)==int): return self.windowslist[index]#se for int, muda
+        for window in self.windowslist:#se for nome, procura entre todas as janelas e muda
+            if(window.name==index):
+                return window
         return False #se não encontrar nada, retorna falso
             
 class Window(ctk.CTkFrame):#páginas (ou janelas) que não scrollam

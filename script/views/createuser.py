@@ -21,17 +21,18 @@ class Createuser(Window):
 
         self.add_element(self.welcomelabel,row=0,column=0)
         self.add_element(self.descriptlabel,row=1,column=0)
-        self.add_element(self.entryuser,row=2,column=0)
-        self.add_element(self.entrypass,row=3,column=0)
-        self.add_element(self.entrynick,row=4,column=0)
-        self.add_element(self.logbutton,row=5,column=0)
+        self.add_element(self.entryuser,row=2,column=0,pady=(50,0),padx=150)
+        self.add_element(self.entrypass,row=3,column=0,pady=(10,0),padx=150)
+        self.add_element(self.entrynick,row=4,column=0,pady=(10,0),padx=150)
+        self.add_element(self.logbutton,row=5,column=0,pady=(30,150),padx=200)
     
     def createuser(self):
         username = self.entryuser.get()
         password = self.entrypass.get()
         nickname = self.entrynick.get()
 
-        userdb = UserDatabase()
-        userdb.add_user(username,password,nickname)
+        if username != "" and password != "" and nickname != "":
+            userdb = UserDatabase()
+            userdb.add_user(username,password,nickname)
 
-        self.master.change_window('login')
+            self.master.change_window('login')

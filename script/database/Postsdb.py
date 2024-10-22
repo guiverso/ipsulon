@@ -9,8 +9,8 @@ class PostsDatabase(Database):
         self.colcontent = Column('contents','varchar',280)
 
         #self.constidposts = Constraint('idposts_pk','PRIMARY')
-        self.constusername = Constraint('username_fk','FOREIGN',atrref=self.colusername,tableref='users')
-        test = self.create_table_content()
+        self.constusername = Constraint('username_fk','FOREIGN',atrref=self.colusername,tableref='Users',references='username')
+        self.create_table_content()
 
     def create_table_content(self):
         return self.create_table('Posts',(self.colidposts,self.colusername,self.colnick ,self.colcontent,self.constusername))
@@ -22,7 +22,7 @@ class PostsDatabase(Database):
         return self.get_from('Posts')
 
     def delete_post(self,idp):
-        self.delete('Posts',where=True,atrsearch='idposts',value=idp)
+        self.delete('Posts',where=True,condition=f"idposts = {idp}")
 
     def edit_post(self,idp,newvalue):
         self.edit('Posts',f"contents = '{newvalue}'",True,f'idposts = {idp}')

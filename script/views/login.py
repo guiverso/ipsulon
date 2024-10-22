@@ -27,9 +27,6 @@ class Login(Window):
         self.add_element(self.entrypass,row=3,column=0,pady=(10,0),padx=150)
         self.add_element(self.logbutton,row=4,column=0,pady=(30,150),padx=200)
         self.add_element(self.creatbutton,row=5,column=0,pady=(0,20),padx=200)
-        userdb = UserDatabase()
-        show = userdb.get_from('Users')
-        print(show)
 
     def create_callbk(self):
         self.master.change_window('create')
@@ -39,18 +36,17 @@ class Login(Window):
         password = self.entrypass.get()
 
         userdb = UserDatabase()
-        useratributs = userdb.get_user_by_username(username)
-        self.user = User(useratributs[0],useratributs[1],useratributs[2])
+        try:
+            useratributs = userdb.get_user_by_username(username)
+            self.user = User(useratributs[0],useratributs[1],useratributs[2])
 
-        self.master.user = self.user
+            self.master.user = self.user
 
-        if self.user.password == password:
-            print('senha correta!')
-            if self.master.change_window('feed'):
-                self.master.change_window('feed')
-            else:
-                self.master.add_window(Feed(self.master))
-                self.master.add_window(Profile(self.master,name=f'profile{self.master.user.username}',usersearch=self.master.user,ownl=True))
-                self.master.change_window('feed')
-        else:
-            print('senha incorreta')
+            if self.user.password == password:
+                if self.master.change_window('feed'):pass
+                else:
+                    self.master.add_window(Feed(self.master))
+                    self.master.add_window(Profile(self.master,name=f'profile{self.master.user.username}',usersearch=self.master.user,ownl=True))
+                    self.master.change_window('feed')
+        except:
+            print('usuário não encontrado')
